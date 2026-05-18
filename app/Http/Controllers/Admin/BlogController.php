@@ -11,17 +11,14 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $blogs = Blog::with('categories')->get();
+        $blogs = Blog::with(['categories', 'thumbImage', 'mainImage'])->get();
 
         return view('admin.blog.index', compact('blogs'));
     }
 
     public function create()
     {
-        $categories = Lookup::where(
-            'type',
-            'BLOG_CATEGORY'
-        )->get();
+        $categories = Lookup::where('type', 'BLOG_CATEGORY')->get();
 
         return view('admin.blog.create', compact('categories'));
     }
@@ -30,23 +27,26 @@ class BlogController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required',
-            'thumb_img' => 'nullable',
-            'main_img' => 'nullable',
             'text' => 'required',
+
+            // ✅ NEW MEDIA IDS
+            'thumb_img_id' => 'nullable|exists:media,media_id',
+            'main_img_id' => 'nullable|exists:media,media_id',
+
             'categories' => 'nullable|array'
         ]);
 
         $blog = Blog::create([
             'title' => $validated['title'],
-            'thumb_img' => $validated['thumb_img'] ?? null,
-            'main_img' => $validated['main_img'] ?? null,
             'text' => $validated['text'],
+
+            // ✅ UPDATED FIELDS
+            'thumb_img_id' => $validated['thumb_img_id'] ?? null,
+            'main_img_id' => $validated['main_img_id'] ?? null,
         ]);
 
         if (!empty($validated['categories'])) {
-            $blog->categories()->attach(
-                $validated['categories']
-            );
+            $blog->categories()->attach($validated['categories']);
         }
 
         return redirect()
@@ -56,7 +56,7 @@ class BlogController extends Controller
 
     public function show($id)
     {
-        $blog = Blog::with('categories')
+        $blog = Blog::with(['categories', 'thumbImage', 'mainImage'])
             ->findOrFail($id);
 
         return view('admin.blog.show', compact('blog'));
@@ -64,18 +64,12 @@ class BlogController extends Controller
 
     public function edit($id)
     {
-        $blog = Blog::with('categories')
+        $blog = Blog::with(['categories', 'thumbImage', 'mainImage'])
             ->findOrFail($id);
 
-        $categories = Lookup::where(
-            'type',
-            'BLOG_CATEGORY'
-        )->get();
+        $categories = Lookup::where('type', 'BLOG_CATEGORY')->get();
 
-        return view(
-            'admin.blog.edit',
-            compact('blog', 'categories')
-        );
+        return view('admin.blog.edit', compact('blog', 'categories'));
     }
 
     public function update(Request $request, $id)
@@ -84,22 +78,25 @@ class BlogController extends Controller
 
         $validated = $request->validate([
             'title' => 'required',
-            'thumb_img' => 'nullable',
-            'main_img' => 'nullable',
             'text' => 'required',
+
+            // ✅ NEW MEDIA IDS
+            'thumb_img_id' => 'nullable|exists:media,media_id',
+            'main_img_id' => 'nullable|exists:media,media_id',
+
             'categories' => 'nullable|array'
         ]);
 
         $blog->update([
             'title' => $validated['title'],
-            'thumb_img' => $validated['thumb_img'] ?? null,
-            'main_img' => $validated['main_img'] ?? null,
             'text' => $validated['text'],
+
+            // ✅ UPDATED FIELDS
+            'thumb_img_id' => $validated['thumb_img_id'] ?? null,
+            'main_img_id' => $validated['main_img_id'] ?? null,
         ]);
 
-        $blog->categories()->sync(
-            $validated['categories'] ?? []
-        );
+        $blog->categories()->sync($validated['categories'] ?? []);
 
         return redirect()
             ->route('admin.blog.index')
