@@ -11,9 +11,8 @@
     <meta name="keywords" content="index, page">
     <meta name="author" content="Rouqaya Abdulhaq">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('imgs/template/favicon.svg') }}">
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Funky Frontend') }}</title>
 
-    <!-- Scripts -->
     @vite([
         'resources/css/app.css',
         'resources/css/style.css',
@@ -32,15 +31,21 @@
 </head>
 
 <body>
+    <header>
+        @yield('header')
+    </header>
+
     <div id="preloader-active">
         <div class="preloader d-flex align-items-center justify-content-center">
             <div class="preloader-inner position-relative">
-                <div class="text-center"><img class="mb-10" src="{{ asset('imgs/template/favicon.svg') }}" alt="Logo">
+                <div class="text-center">
+                    <img class="mb-10" src="{{ asset('imgs/template/favicon.svg') }}" alt="Logo">
                     <div class="preloader-dots"></div>
                 </div>
             </div>
         </div>
     </div>
+
     <main class="main">
         @yield('content')
     </main>
