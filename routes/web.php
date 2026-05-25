@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\LookupController;
+use App\Http\Controllers\Admin\MediaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,6 +25,7 @@ Route::prefix('admin')
     ->group(function () {
         Route::resource('blog', BlogController::class);
         Route::resource('lookup', LookupController::class);
+        Route::resource('media', MediaController::class);
     });
 
 require __DIR__.'/auth.php';
