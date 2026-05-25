@@ -10,7 +10,8 @@ class LookupController extends Controller
 {
     public function index()
     {
-        $items = Lookup::all();
+        $items = Lookup::with('image')->get();
+
         return view('admin.lookup.index', compact('items'));
     }
 
@@ -24,11 +25,19 @@ class LookupController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|string|max:255',
-            'img' => 'nullable|string',
+
+            // ✅ UPDATED
+            'img_id' => 'nullable|exists:media,media_id',
+
             'description' => 'nullable|string',
         ]);
 
-        Lookup::create($validated);
+        Lookup::create([
+            'title' => $validated['title'],
+            'type' => $validated['type'],
+            'img_id' => $validated['img_id'] ?? null,
+            'description' => $validated['description'] ?? null,
+        ]);
 
         return redirect()
             ->route('admin.lookup.index')
@@ -37,13 +46,15 @@ class LookupController extends Controller
 
     public function show($id)
     {
-        $item = Lookup::findOrFail($id);
+        $item = Lookup::with('image')->findOrFail($id);
+
         return view('admin.lookup.show', compact('item'));
     }
 
     public function edit($id)
     {
         $item = Lookup::findOrFail($id);
+
         return view('admin.lookup.edit', compact('item'));
     }
 
@@ -54,11 +65,19 @@ class LookupController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|string|max:255',
-            'img' => 'nullable|string',
+
+            // ✅ UPDATED
+            'img_id' => 'nullable|exists:media,media_id',
+
             'description' => 'nullable|string',
         ]);
 
-        $item->update($validated);
+        $item->update([
+            'title' => $validated['title'],
+            'type' => $validated['type'],
+            'img_id' => $validated['img_id'] ?? null,
+            'description' => $validated['description'] ?? null,
+        ]);
 
         return redirect()
             ->route('admin.lookup.index')
