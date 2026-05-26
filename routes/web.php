@@ -7,7 +7,7 @@ use App\Http\Controllers\Admin\MediaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('guest.home');
 });
 
 Route::get('/dashboard', function () {
