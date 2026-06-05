@@ -36,3 +36,47 @@
         </div>
     </div>
 </header>
+<script>
+    // DARK / LIGHT MODE
+    const toggleSwitch = document.querySelector('#flexSwitchCheckChecked');
+    const currentTheme = localStorage.getItem('theme');
+    let currentSection = localStorage.getItem('section');
+
+    if (currentTheme) {
+        document.documentElement.classList.add(`theme-${currentTheme}`);
+        toggleSwitch.checked = currentTheme === 'night';
+    }
+
+    if (currentSection) {
+        showSection(currentSection);
+    }
+
+    function switchTheme(e) {
+        const isDarkMode = e.target.checked;
+        document.documentElement.classList.toggle('theme-night', isDarkMode);
+        document.documentElement.classList.toggle('theme-day', !isDarkMode);
+        localStorage.setItem('theme', isDarkMode ? 'night' : 'day');
+    }
+
+    function showSection(sectionId) {
+        const sections = document.querySelectorAll('.section');
+        sections.forEach((section) => {
+            if (section.id === sectionId) {
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+            }
+        });
+        localStorage.setItem('section', sectionId);
+    }
+
+    toggleSwitch.addEventListener('change', switchTheme, false);
+
+    document.querySelectorAll('.nav-link').forEach((link) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const sectionId = e.target.getAttribute('href').slice(1);
+            showSection(sectionId);
+        });
+    });
+</script>
