@@ -4,9 +4,10 @@
             <div class="col-xl-1"></div>
             <div class="col-xl-10 col-lg-12">
                 <div class="main-header">
-                    <div class="header-logo"><a class="d-flex" href="index.html"><img class="logo-night" alt="GenZ"
-                                src="assets/imgs/template/logo.svg"><img class="d-none logo-day" alt="GenZ"
-                                src="assets/imgs/template/logo-day.svg"></a></div>
+                    <div class="header-logo"><a class="d-flex" href="index.html"><img class="logo-night"
+                                alt="Funky Frontend" src="{{ asset('imgs/template/logo.svg') }}"><img
+                                class="d-none logo-day" alt="Funky Frontend"
+                                src="{{ asset('imgs/template/logo-day.svg') }}"></a></div>
                     <div class="header-nav">
                         <nav class="nav-main-menu d-none d-xl-block">
                             <ul class="main-menu">
