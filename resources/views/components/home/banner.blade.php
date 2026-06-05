@@ -28,12 +28,12 @@
                     </div>
                     <div class="col-lg-6 text-center">
                         <div class="banner-img no-bg">
-                            {{-- <div class="banner-1 shape-1"><img src="{{ asset('imgs/computer.jpg') }}" alt="Funky
-                                    Frontend" />
+                            <div class="banner-1 shape-1"><img src="{{ asset('imgs/coding.jpg') }}"
+                                    style="max-height: 500px;" alt="Coding" />
                             </div>
-                            <div class="banner-2 shape-2"><img src="assets/imgs/page/homepage3/banner-2.jpg"
-                                    alt="Funky Frontend">
-                            </div> --}}
+                            <div class="banner-2 shape-2"><img style="max-height: 400px;"
+                                    src="{{ asset('imgs/design.jpg') }}" alt="Design">
+                            </div>
                         </div>
                     </div>
                 </div>
