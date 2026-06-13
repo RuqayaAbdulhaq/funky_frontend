@@ -10,9 +10,9 @@ class LookupController extends Controller
 {
     public function index()
     {
-        $items = Lookup::with('image')->get();
+        $lookups = Lookup::with('image')->get();
 
-        return view('admin.lookup.index', compact('items'));
+        return view('admin.lookup.index', compact('lookups'));
     }
 
     public function create()
@@ -44,23 +44,16 @@ class LookupController extends Controller
             ->with('success', 'Created successfully');
     }
 
-    public function show($id)
+       public function edit($id)
     {
-        $item = Lookup::with('image')->findOrFail($id);
+        $lookup = Lookup::findOrFail($id);
 
-        return view('admin.lookup.show', compact('item'));
-    }
-
-    public function edit($id)
-    {
-        $item = Lookup::findOrFail($id);
-
-        return view('admin.lookup.edit', compact('item'));
+        return view('admin.lookup.edit', compact('lookup'));
     }
 
     public function update(Request $request, $id)
     {
-        $item = Lookup::findOrFail($id);
+        $lookup = Lookup::findOrFail($id);
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -72,7 +65,7 @@ class LookupController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $item->update([
+        $lookup->update([
             'title' => $validated['title'],
             'type' => $validated['type'],
             'img_id' => $validated['img_id'] ?? null,
@@ -86,8 +79,8 @@ class LookupController extends Controller
 
     public function destroy($id)
     {
-        $item = Lookup::findOrFail($id);
-        $item->delete();
+        $lookup = Lookup::findOrFail($id);
+        $lookup->delete();
 
         return redirect()
             ->route('admin.lookup.index')
