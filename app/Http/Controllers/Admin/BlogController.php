@@ -9,9 +9,14 @@ use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $blogs = Blog::with(['categories', 'thumbImage', 'mainImage'])->get();
+        $blogs = Blog::with(['categories', 'thumbImage', 'mainImage'])
+            ->when($request->search, function ($query) use ($request) {
+                $query->where('title', 'like', '%' . $request->search . '%');
+            })
+            ->orderBy('blog_id', 'desc')
+            ->simplePaginate(10);
 
         return view('admin.blog.index', compact('blogs'));
     }

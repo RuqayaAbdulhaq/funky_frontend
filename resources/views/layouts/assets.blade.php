@@ -25,7 +25,7 @@
         'resources/js/vendors/text-type.js',
         'resources/js/vendors/swiper-bundle.min.js',
         'resources/js/vendors/jquery.progressScroll.min.js',
-        'resources/js/main.js?v=2.0',
+        'resources/js/main.js',
         'resources/js/app.js'
     ])
 </head>
